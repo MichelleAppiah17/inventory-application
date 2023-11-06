@@ -1,0 +1,4 @@
+{
+    "less.lint.unknownAtRules": "warning",
+    "css.lint.unknownAtRules": "ignore"
+}
