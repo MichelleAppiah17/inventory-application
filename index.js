@@ -21,8 +21,7 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  },
-});
+  }});
 
 async function run() {
   try {
@@ -57,21 +56,28 @@ async function run() {
       res.send(result);
     });
 
-    app.delete('/book/:id', async(req,res) => {
-        const id = req.params.id;
-        const filter = { _id: new ObjectId(id) };
-        const result = await bookCollection.deleteOne(filter);
-        res.send(result);
-    })
+    app.delete('/book/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const result = await bookCollection.deleteOne(filter);
+      res.send(result);
+    });
 
-    app.get('/all-books', async(req,res) => {
-        let query = {};
-        if(req.query?.category){
-            query = {category: req.query.category}
-        }
-        const result = await bookCollection.find(query).toArray();
-        res.send(result)
-    })
+    app.get('/books', async (req, res) => {
+      let query = {};
+      if (req.query?.category) {
+        query = { category: req.query.category };
+      }
+      const result = await bookCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.get('/book/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const result = await bookCollection.findOne(filter);
+      res.send(result);
+    });
 
     await client.db('admin').command({ ping: 1 });
     console.log('Pinged your deployment. You successfully connected to MongoDB!');
@@ -85,3 +91,4 @@ run().catch(console.dir);
 app.listen(port, () => {
   console.log(`App is listening on port ${port}`);
 });
+
