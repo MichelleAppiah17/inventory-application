@@ -8,7 +8,9 @@ function App() {
   return (
     <>
       <NavBar/>
-      <Outlet/>
+      <div className='min-h-screen'>
+        <Outlet/>
+      </div>
     </>
   )
 }

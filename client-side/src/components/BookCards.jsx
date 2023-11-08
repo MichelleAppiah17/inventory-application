@@ -55,7 +55,7 @@ const BookCards = ({headline, books}) => {
                 </div>
               </div>
               <div>
-                <div className='mt-20'>
+                <div className='mt-10'>
                   <h3 className='text-black'>{book.bookTitle}</h3>
                   <p className='text-black'>{book.authorName}</p>
                 </div>
