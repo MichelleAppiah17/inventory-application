@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FaBlog, FaBars, FaBox } from "react-icons/fa"; 
+import { AuthContext } from '../contects/AuthProvider';
 
 const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSticky, setIsSticky] = useState(false);
+
+    const { user } = useContext(AuthContext);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -51,11 +54,14 @@ const NavBar = () => {
                         )}
                     </ul>
 
-                    {/*btn for device*/}
+                    {/*btn for lg device*/}
                     <div className='space-x-12 hidden lg:flex items-center'>
                         <button>
                             <FaBars className='w-5 hover:text-blue-700'/>
                         </button>
+                        {/*
+                           // user? user.email : ""
+                            */ }
                     </div>
 
                     {/*menu button for mobile devices*/}
