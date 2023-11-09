@@ -11,7 +11,7 @@ import './BookCards.css';
 // import required modules
 import { Pagination } from 'swiper/modules';
 import { Link } from 'react-router-dom';
-import { FaCartShopping } from 'react-icons/fa6'
+import { FaShoppingCart } from 'react-icons/fa';
 
 const BookCards = ({headline, books}) => {
   //console.log(books)
@@ -50,8 +50,7 @@ const BookCards = ({headline, books}) => {
               <div>
                 <img src={book.imageUrl} alt=""/>
                 <div className='absolute top-3 right-3 bg-blue-600 hover:bg-black p-2 rounded'>
-                  <FaCartShopping className='w-4 h-4 text-white'/>
-
+                  <FaShoppingCart className='w-4 h-4 text-white'/>
                 </div>
               </div>
               <div>
@@ -70,4 +69,5 @@ const BookCards = ({headline, books}) => {
   )
 }
 
-export default BookCards
+export default BookCards;
+
