@@ -24,6 +24,8 @@ const SignUp = () => {
                 alert("Sign Up successfull!");
                 navigate(from, {replace: true});
                 form.reset();
+                form.email.value = '';
+                form.password.value = '';
                 // ...
             })
             .catch((error) => {
@@ -60,18 +62,18 @@ const SignUp = () => {
                             <h1 className="text-2xl font-semibold">Sign Up Form</h1>
                         </div>
                         <div className="divide-y divide-gray-200">
-                            <Form onSubmit={handleSignUp} className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                            <form onSubmit={handleSignUp} className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                                 <div className="relative">
-                                    <input  id="email" name="email" type="text" className="peer  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Email address" />
+                                    <input  id="email" name="email" type="text" className="peer  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600" placeholder="Email address" />
                                 </div>
                                 <div className="relative">
-                                    <input  id="password" name="password" type="password" className="peer  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" />
+                                    <input  id="password" name="password" type="password" className="peer  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600" placeholder="Password" />
                                 </div>
                                 <p>If you have an account. Please <Link to="/login" className='text-blue-600 underline'>Login</Link> Here</p>
                                 <div className="relative">
                                     <button className="bg-blue-500 text-white rounded-md px-2 py-1">Sign Up</button>
                                 </div>
-                            </Form>
+                            </form>
                         </div>
                         <hr/>
                         <div className='flex w-full items-center flex-col mt-5 gap-3'>

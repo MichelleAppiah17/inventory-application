@@ -48,6 +48,6 @@
     background-image: url('src/assets/BannerImages/image8.jpg');
 }
 
-.swiper-slide:nth-child(9n) {
+.banner,.swiper-slide:nth-child(9n) {
     background-image: url('src/assets/BannerImages/image9.jpg');
 }
