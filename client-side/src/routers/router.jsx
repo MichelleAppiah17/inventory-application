@@ -17,6 +17,7 @@ import PrivateRoute from "../privateRoute/PrivateRoute";
 import Logout from "../components/Logout";
 
 const router = createBrowserRouter([
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   {
     path: "/",
     element: <App/>,
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
         {
           path: '/book/:id',
           element: <SingleBook/>,
-          loader: ({params}) => fetch(`http://localhost:5000/book/${params.id}`)
+          loader: ({params}) => fetch(`${apiUrl}/book/${params.id}`)
         }
     ]
   },
@@ -55,7 +56,7 @@ const router = createBrowserRouter([
       {
         path: "/admin/dashboard/edit-books/:id",
         element: <EditBooks/>,
-        loader: ({params}) => fetch(`http://localhost:5000/book/${params.id}`)
+        loader: ({params}) => fetch(`${apiUrl}/book/${params.id}`)
       }
     ]
   },
