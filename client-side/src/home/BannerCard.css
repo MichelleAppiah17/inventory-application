@@ -21,33 +21,33 @@
 }
 
 .banner,.swiper-slide:nth-child(2n) {
-    background-image: url('src/assets/BannerImages/image2.jpg');
+    background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image2.jpg');
 }
 
 .banner,.swiper-slide:nth-child(3n) {
-    background-image: url('src/assets/BannerImages/image3.jpg');
+    background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image3.jpg');
 }
 
 .banner,.swiper-slide:nth-child(4n) {
-    background-image: url('src/assets/BannerImages/image4.jpg');
+    background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image4.jpg');
 }
 
 .banner,.swiper-slide:nth-child(5n) {
-    background-image: url('src/assets/BannerImages/image5.jpg');
+    background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image5.jpg');
 }
 
 .banner,.swiper-slide:nth-child(6n) {
-    background-image: url('src/assets/BannerImages/image6.jpg');
+    background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image6.jpg');
 }
 
 .banner,.swiper-slide:nth-child(7n) {
-    background-image: url('src/assets/BannerImages/image7.jpg');
+    background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image7.jpg');
 }
 
 .banner,.swiper-slide:nth-child(8n) {
-    background-image: url('src/assets/BannerImages/image8.jpg');
+    background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image8.jpg');
 }
 
 .banner,.swiper-slide:nth-child(9n) {
-    background-image: url('src/assets/BannerImages/image9.jpg');
+    background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image9.jpg');
 }
