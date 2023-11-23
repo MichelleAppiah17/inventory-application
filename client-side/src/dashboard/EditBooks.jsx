@@ -40,9 +40,9 @@ const EditBooks = () => {
     const updateBookObject = {
       bookTitle,authorName,imageUrl,category,bookDescription,bookPdfUrl
     }
-    const apiUrl = import.meta.env.VITE_API_BASE_URL;
+    const apiUrl = 'https://inventory-application-zrr6.onrender.com';
     //update book data
-    fetch(`http://localhost:5000/book/${id}`, {
+    fetch(`${apiUrl}/book/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"

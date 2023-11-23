@@ -16,7 +16,7 @@ import Login from "../components/Login";
 import PrivateRoute from "../privateRoute/PrivateRoute";
 import Logout from "../components/Logout";
 
-const apiUrl = import.meta.env.VITE_API_BASE_URL;
+const apiUrl = 'https://inventory-application-zrr6.onrender.com';
 
 const router = createBrowserRouter([
   

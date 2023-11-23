@@ -35,9 +35,9 @@ const UploadBook = () => {
     const bookObject = {
       bookTitle,authorName,imageUrl,category,bookDescription,bookPdfUrl
     }
-    const apiUrl = import.meta.env.VITE_API_BASE_URL;
+    const apiUrl = 'https://inventory-application-zrr6.onrender.com';
     //send data to DB
-    fetch("http://localhost:5000/upload-book", {
+    fetch(`${apiUrl}/upload-book`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
