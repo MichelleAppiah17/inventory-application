@@ -3,8 +3,9 @@ import { Card } from 'flowbite-react';
 
 const Shop = () => {
   const [books, setBooks] = useState([]);
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   useEffect(() => {
-    fetch("http://localhost:5000/all-books").then(res => res.json()).then(data => setBooks(data));
+    fetch(`${apiUrl}/all-books`).then(res => res.json()).then(data => setBooks(data));
   }, [])
   return (
     <div className='mt-28 px-4 lg:px-24'>
