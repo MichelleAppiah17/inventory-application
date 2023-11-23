@@ -37,7 +37,7 @@ const UploadBook = () => {
     }
     const apiUrl = 'https://inventory-application-zrr6.onrender.com';
     //send data to DB
-    fetch(`${apiUrl}/admin/dashboard/upload`, {
+    fetch(`${apiUrl}/upload-book`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
