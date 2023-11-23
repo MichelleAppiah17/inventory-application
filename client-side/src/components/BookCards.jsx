@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 // Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { SwiperSlide as MySwiperSlide} from 'swiper/react';
+import { Swiper as MySwiper}  from 'swiper/react'
 
 // Import Swiper styles
 import 'swiper/css';
@@ -21,7 +22,7 @@ const BookCards = ({headline, books}) => {
 
         {/*cards */}
         <div className='mt-12'>
-        <Swiper
+        <MySwiper
         slidesPerView={1}
         spaceBetween={10}
         pagination={{
@@ -45,7 +46,7 @@ const BookCards = ({headline, books}) => {
         className="mySwiper w-full h-full "
       >
         {
-          books.map(book => <SwiperSlide className='mySwipperSlide' key={book._id}>
+          books.map(book => <MySwiperSlide className='mySwipperSlide' key={book._id}>
             <Link to={`/book/${book._id}`}>
               <div>
                 <img src={book.imageUrl} alt=""/>
@@ -60,9 +61,9 @@ const BookCards = ({headline, books}) => {
                 </div>
               </div>
             </Link>
-          </SwiperSlide>)
+          </MySwiperSlide>)
         }
-      </Swiper>
+      </MySwiper>
 
         </div>
     </div>
