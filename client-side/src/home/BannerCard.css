@@ -3,7 +3,7 @@
     height: 320px;
 }
 
-.banner,.nswiper-slide {
+.banner,.swiper-slide {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,41 +13,41 @@
     color: #fff;
 }
 
-.banner,.nswiper-slide:nth-child(1n) {
+.banner,.swiper-slide:nth-child(1n) {
     background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image1.jpg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.banner,.nswiper-slide:nth-child(2n) {
+.banner,.swiper-slide:nth-child(2n) {
     background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image2.jpg');
 }
 
-.banner,.nswiper-slide:nth-child(3n) {
+.banner,.swiper-slide:nth-child(3n) {
     background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image3.jpg');
 }
 
-.banner,.nswiper-slide:nth-child(4n) {
+.banner,.swiper-slide:nth-child(4n) {
     background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image4.jpg');
 }
 
-.banner,.nswiper-slide:nth-child(5n) {
+.banner,.swiper-slide:nth-child(5n) {
     background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image5.jpg');
 }
 
-.banner,.nswiper-slide:nth-child(6n) {
+.banner,.swiper-slide:nth-child(6n) {
     background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image6.jpg');
 }
 
-.banner,.nswiper-slide:nth-child(7n) {
+.banner,.swiper-slide:nth-child(7n) {
     background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image7.jpg');
 }
 
-.banner,.nswiper-slide:nth-child(8n) {
+.banner,.swiper-slide:nth-child(8n) {
     background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image8.jpg');
 }
 
-.banner,.nswiper-slide:nth-child(9n) {
+.banner,.swiper-slide:nth-child(9n) {
     background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image9.jpg');
 }
