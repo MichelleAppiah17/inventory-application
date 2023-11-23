@@ -3,7 +3,6 @@ import BookCards from '../components/BookCards';
 
 const BestSellerBooks= () => {
     const [books, setBooks] = useState([]);
-    const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
     useEffect( () => {
         fetch(`${apiUrl}/all-books`).then(res => res.json()).then(data => setBooks(data.slice(0,8)))

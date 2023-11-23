@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 const ManageBooks = () => {
   const [allBooks, setAllBooks] = useState([]);
-  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   useEffect( () => {
     fetch(`${apiUrl}/all-books`).then(res => res.json()).then(data => setAllBooks(data))
   },[])

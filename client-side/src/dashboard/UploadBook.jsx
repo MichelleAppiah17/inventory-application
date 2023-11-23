@@ -35,10 +35,9 @@ const UploadBook = () => {
     const bookObject = {
       bookTitle,authorName,imageUrl,category,bookDescription,bookPdfUrl
     }
-
-    //send data to DB
     const apiUrl = import.meta.env.VITE_API_BASE_URL;
-    fetch(`${apiUrl}/upload-book`, {
+    //send data to DB
+    fetch("http://localhost:5000/upload-book", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
