@@ -18,7 +18,6 @@ import Logout from "../components/Logout";
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
-const apiUrl = import.meta.env.VITE_API_BASE_URL;
 const router = createBrowserRouter([
   
   {
