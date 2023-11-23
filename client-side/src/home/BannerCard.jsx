@@ -12,7 +12,7 @@ const BannerCard = () => {
         effect={'cards'}
         grabCursor={true}
         modules={[EffectCards]}
-        className="mySwiper"
+        className="nswiper"
       >
         <SwiperSlide></SwiperSlide>
         <SwiperSlide></SwiperSlide>
