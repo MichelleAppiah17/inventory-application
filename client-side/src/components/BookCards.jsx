@@ -42,7 +42,7 @@ const BookCards = ({headline, books}) => {
           },
         }}
         modules={[Pagination]}
-        className="mySwipperSlide w-full h-full "
+        className="mySwipper w-full h-full "
       >
         {
           books.map(book => <SwiperSlide className='mySwipperSlide' key={book._id}>
