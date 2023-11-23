@@ -14,7 +14,7 @@
 }
 
 .banner,.swiper-slide:nth-child(1n) {
-    background-image: url('src/assets/BannerImages/image1.jpg');
+    background-image: url('https://raw.githubusercontent.com/MichelleAppiah17/inventory-application/main/client-side/src/assets/BannerImages/image1.jpg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
