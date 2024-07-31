@@ -31,10 +31,12 @@ const NavBar = () => {
     }, []);
 
     const navItems = [
-        { link: "Home", path: "/" },
-        { link: "Shop", path: "/shop" },
-        { link: "sell your book", path: "/admin/dashboard" },
-    ]
+      { link: "Home", path: "/" },
+      { link: "Shop", path: "/shop" },
+      
+      { link: "sell your book", path: "/admin/dashboard" },
+      { link: "Chat with AI", path: "/chatbot" },
+    ];
 
     return (
         <header className='w-full bg-transparent fixed top-0 left-0 right-0 transistion-all ease-in duration-300'>

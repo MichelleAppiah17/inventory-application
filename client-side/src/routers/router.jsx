@@ -15,65 +15,74 @@ import SignUp from "../components/SignUp";
 import Login from "../components/Login";
 import PrivateRoute from "../privateRoute/PrivateRoute";
 import Logout from "../components/Logout";
+import Chatbot from "../chatbot/chatbot";
 
 const apiUrl = 'https://inventory-application-zrr6.onrender.com';
 
 const router = createBrowserRouter([
-  
   {
     path: "/",
-    element: <App/>,
+    element: <App />,
     children: [
-        {
-            path: '/',
-            element: <Home/>
-        },
-        {
-            path: '/shop',
-            element: <Shop/>
-        },
-        {
-          path: '/book/:id',
-          element: <SingleBook/>,
-          loader: ({params}) => fetch(`${apiUrl}/book/${params.id}`)
-        }
-    ]
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/shop",
+        element: <Shop />,
+      },
+      {
+        path: "/chatbot",
+        element: <Chatbot />,
+      },
+
+      {
+        path: "/book/:id",
+        element: <SingleBook />,
+        loader: ({ params }) => fetch(`${apiUrl}/book/${params.id}`),
+      },
+    ],
   },
   {
     path: "/admin/dashboard",
-    element: <DashboardLayout/>,
+    element: <DashboardLayout />,
     children: [
       {
         path: "/admin/dashboard",
-        element: <PrivateRoute><DashBoard/></PrivateRoute>
+        element: (
+          <PrivateRoute>
+            <DashBoard />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/admin/dashboard/upload",
-        element: <UploadBook/>
+        element: <UploadBook />,
       },
       {
         path: "/admin/dashboard/manage",
-        element: <ManageBooks/>
+        element: <ManageBooks />,
       },
       {
         path: "/admin/dashboard/edit-books/:id",
-        element: <EditBooks/>,
-        loader: ({params}) => fetch(`${apiUrl}/book/${params.id}`)
-      }
-    ]
+        element: <EditBooks />,
+        loader: ({ params }) => fetch(`${apiUrl}/book/${params.id}`),
+      },
+    ],
   },
   {
     path: "sign-up",
-    element: <SignUp/>
+    element: <SignUp />,
   },
   {
     path: "login",
-    element: <Login/>
+    element: <Login />,
   },
   {
     path: "logout",
-    element: <Logout/>
-  }
+    element: <Logout />,
+  },
 ]);
 
 export default router;
