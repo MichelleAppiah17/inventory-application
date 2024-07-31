@@ -5,10 +5,10 @@ import { usePaystackPayment } from "react-paystack";
 const Shop = () => {
   const [books, setBooks] = useState([]);
   const intializePayment = usePaystackPayment({
-    publicKey: "pk_test_3f7e4e7550793665bbf76d1c536904878490a495",
+    publicKey: "pk_live_9db33b4cf4d600296775c60a71030c7a176c4ae0",
     currency: "GHS",
     email: "michelle@gmail.com",
-    channels: ["bank", "mobile_money", "qr"],
+    channels: ["mobile_money"],
     phone: "0593009511",
     amount: 100 * 100, //multiply by 100 the price of the book
   });

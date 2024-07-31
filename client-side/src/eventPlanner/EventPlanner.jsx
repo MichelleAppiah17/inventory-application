@@ -1,4 +1,5 @@
 import React, { useState ,useEffect} from "react";
+// import {setDocs}
 
 function EventPlanner() {
   const [books, setBooks] = useState([]);
@@ -27,6 +28,7 @@ function EventPlanner() {
         });
     }, []);
 
+    // BookRef = doc(....) upload this to firebase database(cloud firestore)
   //  const filteredBooks  = allBooks.filter((paraml))
   
 
