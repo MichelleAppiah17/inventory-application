@@ -15,9 +15,9 @@ import SignUp from "../components/SignUp";
 import Login from "../components/Login";
 import PrivateRoute from "../privateRoute/PrivateRoute";
 import Logout from "../components/Logout";
-import Chatbot from "../chatbot/chatbot";
+import EventPlanner from "../eventPlanner/EventPlanner";
 
-const apiUrl = 'https://inventory-application-zrr6.onrender.com';
+const apiUrl = "https://inventory-application-zrr6.onrender.com";
 
 const router = createBrowserRouter([
   {
@@ -33,8 +33,8 @@ const router = createBrowserRouter([
         element: <Shop />,
       },
       {
-        path: "/chatbot",
-        element: <Chatbot />,
+        path: "/eventPlanner",
+        element: <EventPlanner />,
       },
 
       {
