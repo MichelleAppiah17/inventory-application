@@ -36,6 +36,7 @@ const NavBar = () => {
 
     { link: "sell your book", path: "/admin/dashboard" },
     { link: "Event Planner", path: "/eventPlanner" },
+    { link: "TaskTalk", path: "/taskTalk" },
   ];
 
   return (

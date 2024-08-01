@@ -23,7 +23,7 @@ const Login = () => {
         const user = userCredential.user;
         alert("Login successful!!");
         if (isBuyer) {
-          navigate("/eventPlanner", { replace: true });
+          navigate("/", { replace: true });
         } else {
           navigate("/admin/dashboard", { replace: true });
         }
@@ -48,7 +48,7 @@ const Login = () => {
         const user = result.user;
         alert("Login successful!");
         if (isBuyer) {
-          navigate("/eventPlanner", { replace: true });
+          navigate("/", { replace: true });
         } else {
           navigate("/admin/dashboard", { replace: true });
         }

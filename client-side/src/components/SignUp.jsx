@@ -24,7 +24,7 @@ const SignUp = () => {
         const user = userCredential.user;
         alert("Sign Up successful!");
         if (isBuyer) {
-          navigate("/eventPlanner", { replace: true }); // Navigate to buyer's home page
+          navigate("/", { replace: true }); // Navigate to buyer's home page
         } else {
           navigate("/admin/dashboard", { replace: true }); // Navigate to seller's dashboard or page
         }
@@ -42,7 +42,7 @@ const SignUp = () => {
         const user = result.user;
         alert("Sign Up successful!");
         if (isBuyer) {
-          navigate("/eventPlanner", { replace: true }); // Navigate to buyer's home page
+          navigate("/", { replace: true }); // Navigate to buyer's home page
         } else {
           navigate("/admin/dashboard", { replace: true }); // Navigate to seller's dashboard or page
         }

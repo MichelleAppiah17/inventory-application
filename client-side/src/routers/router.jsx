@@ -16,6 +16,7 @@ import Login from "../components/Login";
 import PrivateRoute from "../privateRoute/PrivateRoute";
 import Logout from "../components/Logout";
 import EventPlanner from "../eventPlanner/EventPlanner";
+import TaskTalk from "../taskTalk/TaskTalk";
 
 const apiUrl = "https://inventory-application-zrr6.onrender.com";
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/eventPlanner",
         element: <EventPlanner />,
+      },
+      {
+        path: "/taskTalk",
+        element: <TaskTalk />,
       },
 
       {
