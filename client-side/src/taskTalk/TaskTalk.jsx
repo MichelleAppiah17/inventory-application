@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import  { useState, useEffect, useContext } from "react";
 import io from "socket.io-client";
 import {
   collection,
@@ -21,11 +21,9 @@ function TaskTalk() {
   const chatRef = collection(db, "TaskTalk"); // Firestore collection
 
   useEffect(() => {
-    if (user === null) {
-      // Redirect to login if user is not authenticated
-      navigate("/login");
-      return;
-    }
+    if (user !== null) {
+    
+   
 
     // Listen for incoming messages
     socket.on("chatMessage", (msg) => {
@@ -45,11 +43,13 @@ function TaskTalk() {
       setMessages(chats);
     });
 
-    // Cleanup on unmount
     return () => {
       socket.off("chatMessage");
       unsubscribe();
-    };
+    }; }else{
+      navigate("/login");
+      return
+    }
   }, [user, navigate]);
 
   const handleSendMessage = async (e) => {

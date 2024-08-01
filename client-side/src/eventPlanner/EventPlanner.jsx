@@ -1,11 +1,11 @@
-import { useState, useEffect, useContext } from "react";
+import  { useState, useEffect, useContext } from "react";
 import {
   collection,
   setDoc,
-  getDocs,
   doc,
   query,
   where,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase.config";
 import { AuthContext } from "../contexts/AuthProvider";
@@ -17,7 +17,7 @@ function EventPlanner() {
   const [author, setAuthor] = useState("");
   const [deadline, setDeadline] = useState("");
   const [allBooks, setAllBooks] = useState([]);
-  const { user, logout } = useContext(AuthContext); //use this once you made an authentication path way for buyers
+  const { user, logout } = useContext(AuthContext); // use this once you have an authentication pathway for buyers
 
   // Reference to the Firestore collection
   const scheduledPurchasesRef = collection(db, "scheduledPurchases");
@@ -25,6 +25,11 @@ function EventPlanner() {
   const apiUrl = "https://inventory-application-zrr6.onrender.com";
 
   useEffect(() => {
+    if (!user) {
+      return; // Exit if user is not authenticated
+    }
+
+    // Fetch books from external API
     fetch(`${apiUrl}/all-books`)
       .then((res) => res.json())
       .then((data) => {
@@ -37,29 +42,29 @@ function EventPlanner() {
     // Fetch scheduled books from Firestore
     const fetchBooks = async () => {
       try {
-        const querySnapshot = await getDocs(scheduledPurchasesRef);
         const q = query(
-          querySnapshot,
-          where(user.uid, "===", "userId")
+          scheduledPurchasesRef,
+          where("userId", "==", user.uid) // Query books by userId
         );
-        const booksData = q.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setBooks(booksData);
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          const booksData = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          setBooks(booksData);
+        });
+
+        return () => unsubscribe();
       } catch (error) {
         console.error("Error fetching scheduled books:", error);
       }
     };
 
     fetchBooks();
-  }, [books, scheduledPurchasesRef]);
+  }, [user, scheduledPurchasesRef]);
 
   const handleAddBook = async () => {
-    // alert("hello");
     if (title && author && deadline) {
-      // Check if the book exists in allBooks (case-insensitive)
-      // eslint-disable-next-line no-unused-vars
       const bookExists = allBooks.some(
         (book) =>
           book.bookTitle.toLowerCase().replace(/\s+/g, "") ===
@@ -70,21 +75,21 @@ function EventPlanner() {
         const newBook = { title, author, deadline, userId: user.uid };
 
         try {
-          // Generate a unique ID for the document, e.g., using the title or a combination of fields
           const bookId = `${title
             .toLowerCase()
             .replace(/\s+/g, "-")}-${author
             .toLowerCase()
             .replace(/\s+/g, "-")}`;
 
-          // Create a document reference with the specific ID
           const bookDocRef = doc(db, "scheduledPurchases", bookId);
 
-          // Set the document with the new book data
-          await setDoc(bookDocRef, newBook);
+          // Create or update the document with the new book data
+          await setDoc(bookDocRef, newBook, { merge: true });
 
-          // Update local state and clear input fields
-          setBooks([...books, { ...newBook, id: bookId }]);
+          setBooks((prevBooks) => [
+            ...prevBooks,
+            { ...newBook, id: bookId },
+          ]);
           setTitle("");
           setAuthor("");
           setDeadline("");
@@ -131,8 +136,7 @@ function EventPlanner() {
       </div>
       <div className='book-list'>
         <h2>Scheduled Books</h2>
-        {/* use an Activity loader from radix here */}
-        {user !== null ? (
+        {user ? (
           <ul>
             {books.length > 0
               ? books.map((book, index) => (
@@ -158,19 +162,17 @@ function EventPlanner() {
             <Link
               to={"/login"}
               className='underline underline-offset-2'>
-              {" "}
               Continue as a buyer
             </Link>{" "}
             or{" "}
             <Link
               to={"/sign-up"}
               className='underline underline-offset-2'>
-              {" "}
               Become a registered user
             </Link>
           </div>
         )}
-        <button onClick={() => logout()}>Logout</button>
+        {user && <button onClick={() => logout()}>Logout</button>}
       </div>
     </div>
   );
