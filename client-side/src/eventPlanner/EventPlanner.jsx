@@ -53,7 +53,7 @@ function EventPlanner() {
     };
 
     fetchBooks();
-  }, [books, scheduledPurchasesRef,user.uid]);
+  }, [books, scheduledPurchasesRef]);
 
   const handleAddBook = async () => {
     // alert("hello");
