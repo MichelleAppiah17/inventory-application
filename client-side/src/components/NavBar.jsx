@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { FaBlog, FaBars, FaBox } from "react-icons/fa";
-import { AuthContext } from "../contects/AuthProvider";
+import { AuthContext } from "../contexts/AuthProvider";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
