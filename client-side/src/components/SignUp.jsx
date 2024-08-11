@@ -1,4 +1,5 @@
-import { useContext, useState,useEffect } from "react";
+/* eslint-disable no-unused-vars */
+import { useContext, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthProvider";
 import googleLogo from "../assets/googleLogo.png";
@@ -16,10 +17,12 @@ const SignUp = () => {
   const handleSignUp = (event) => {
     event.preventDefault();
     const form = event.target;
+    const name = form.name.value; // Get the user's name
     const email = form.email.value;
     const password = form.password.value;
+    const role = isBuyer ? "buyer" : "seller"; // Determine user role
 
-    createUser(email, password)
+    createUser(email, password, name, role) // Pass the name and role to the createUser function
       .then((userCredential) => {
         const user = userCredential.user;
         alert("Sign Up successful!");
@@ -53,11 +56,11 @@ const SignUp = () => {
       });
   };
 
-    useEffect(() => {
-      if (from === "/admin/dashboard") {
-        setIsBuyer(false);
-      }
-    }, [from]);
+  useEffect(() => {
+    if (from === "/admin/dashboard") {
+      setIsBuyer(false);
+    }
+  }, [from]);
 
   return (
     <div className='min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12'>
@@ -74,11 +77,22 @@ const SignUp = () => {
                 className='py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7'>
                 <div className='relative'>
                   <input
-                    id='email'
-                    name='email'
+                    id='name'
+                    name='name'
                     type='text'
                     className='peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600'
+                    placeholder='Full Name'
+                    required
+                  />
+                </div>
+                <div className='relative'>
+                  <input
+                    id='email'
+                    name='email'
+                    type='email'
+                    className='peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600'
                     placeholder='Email address'
+                    required
                   />
                 </div>
                 <div className='relative'>
@@ -88,6 +102,7 @@ const SignUp = () => {
                     type='password'
                     className='peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600'
                     placeholder='Password'
+                    required
                   />
                 </div>
                 {error && (
@@ -115,17 +130,16 @@ const SignUp = () => {
                       }`}
                     />
                   </Switch.Root>
-
                   <p>{isBuyer ? "Buyer" : "Seller"}</p>
                 </div>
                 <p>
-                  If you have an account. Please{" "}
+                  If you have an account, please{" "}
                   <Link
                     to='/login'
                     className='text-blue-600 underline'>
                     Login
                   </Link>{" "}
-                  Here
+                  here.
                 </p>
                 <div className='relative'>
                   <button className='bg-blue-500 text-white rounded-md px-2 py-1'>

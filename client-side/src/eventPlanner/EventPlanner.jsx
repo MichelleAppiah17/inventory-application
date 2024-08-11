@@ -107,6 +107,7 @@ function EventPlanner() {
   };
 
   return (
+    // make use of max-sm: and sm:max-md: to make it more responsive(apply this principle everywhere)
     <div className='event-planner p-20 flex flex-col items-center'>
       <h1 className='text-3xl font-bold'>Book Purchase Planner</h1>
       <div className='input-form'>
