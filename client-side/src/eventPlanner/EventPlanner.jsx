@@ -175,7 +175,7 @@ function EventPlanner() {
             </Link>
           </div>
         )}
-        {user && <button onClick={() => logout()}>Logout</button>}
+        {user && <button onClick={() => logout()} className="bg-blue-600 text-white p-2">Logout</button>}
       </div>
     </div>
   );
