@@ -1,4 +1,4 @@
-import  { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   collection,
   setDoc,
@@ -9,7 +9,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/firebase.config";
 import { AuthContext } from "../contexts/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function EventPlanner() {
   const [books, setBooks] = useState([]);
@@ -23,10 +23,12 @@ function EventPlanner() {
   const scheduledPurchasesRef = collection(db, "scheduledPurchases");
 
   const apiUrl = "https://inventory-application-zrr6.onrender.com";
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) {
-      return; // Exit if user is not authenticated
+    if (user === null) {
+      navigate("/login");
+      return;
     }
 
     // Fetch books from external API

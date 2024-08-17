@@ -52,7 +52,7 @@ function TaskTalk() {
   const dbRealtime = getDatabase();
 
   useEffect(() => {
-    if (!user) {
+    if (user === null) {
       navigate("/login");
       return;
     }
@@ -279,8 +279,6 @@ function TaskTalk() {
   }, [searchQuery]);
 
   return (
-    // check to see whether user has signed in or not
-    // fix the search function
     <div className='flex h-screen p-20'>
       <div className='sidebar sticky p-4 w-1/4 border-r border-gray-300'>
         <h2 className='text-xl mb-4 bg-blue-600 text-white p-2'>
