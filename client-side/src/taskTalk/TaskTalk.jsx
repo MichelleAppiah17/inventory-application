@@ -196,7 +196,7 @@ function TaskTalk() {
       // alert(selectedChat.id);
       // selectedChat.participants[1] not working in users
       const participants = selectedChat.id.split("_").reverse();
-      alert(participants);
+      // alert(participants);
       const chatMessage = {
         id: messageId,
         userId: user.uid,
