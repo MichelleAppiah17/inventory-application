@@ -12,11 +12,12 @@ import {
   doc,
   updateDoc,
   serverTimestamp,
+  addDoc,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase.config";
 import { AuthContext } from "../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
-// the realtime database doesnt matter now I'm using cloud firestore but dont remove it 
+// the realtime database doesnt matter now I'm using cloud firestore but dont remove it
 // for future use only
 import {
   getDatabase,
@@ -26,6 +27,7 @@ import {
 } from "firebase/database";
 import { signOut } from "firebase/auth";
 import socketIO from "socket.io-client";
+import { Spinner } from "@radix-ui/themes";
 
 const socket = socketIO.connect("http://localhost:5000");
 
@@ -45,6 +47,7 @@ function TaskTalk() {
   const [selectedChat, setSelectedChat] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
   const dbRealtime = getDatabase();
 
@@ -111,26 +114,6 @@ function TaskTalk() {
     socket.on("newUserResponse", (data) => setUsers(data));
   }, []);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const usersSnapshot = collection(db, "users");
-      const querySnapshot = await getDocs(usersSnapshot);
-      const foundUsers = querySnapshot.docs
-        .map((doc) => doc.data())
-        .filter((user) =>
-          user.userName
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase())
-        );
-      setUsers(foundUsers);
-    } catch (error) {
-      console.error("Error searching users:", error);
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
@@ -151,6 +134,9 @@ function TaskTalk() {
   }, []);
 
   const handleSelectChat = async (selectedUser) => {
+    // check Tasktalk
+    // selectedUser from users.map has a problem sending message
+
     setShowChat(true);
     const chatId = selectedUser.chatId
       ? selectedUser.chatId
@@ -158,10 +144,20 @@ function TaskTalk() {
     const chatDocRef = doc(db, "TaskTalk", chatId);
     const chatSnapshot = await getDoc(chatDocRef);
 
-    if (!chatSnapshot.exists()) {
+    const reversedId = `${user.uid}_${selectedUser.uid}`
+      .split("_")
+      .reverse()
+      .join("_");
+
+    const reversedChatDocRef = doc(db, "TaskTalk", reversedId);
+    const reversedChatSnapshot = await getDoc(reversedChatDocRef);
+    // alert(reversedId);
+
+    // check TaskTalk to see if the convo already exists
+    if (!reversedChatSnapshot.exists() && !chatSnapshot.exists()) {
       await setDoc(chatDocRef, {
         participants: [user.uid, selectedUser.uid],
-        chatId: selectedChat.id,
+        chatId: chatId,
         lastMessage: "",
         timestamp: serverTimestamp(),
       });
@@ -173,7 +169,7 @@ function TaskTalk() {
     const messagesRef = collection(
       db,
       "TaskTalk",
-      chatId,
+      !chatSnapshot.exists() ? reversedId : chatId,
       "messages"
     );
     const messagesSnapshot = await getDocs(messagesRef);
@@ -185,18 +181,22 @@ function TaskTalk() {
     setMessages(chatMessages);
   };
 
-  useEffect(() => {});
-
   const handleTyping = () => {
     socket.emit("typing", `${userName} is typing...`);
   };
 
   const handleSendMessage = async (e) => {
+    // selectedUser has a problem sending message
     e.preventDefault();
     if (message.length > 0 && user && selectedChat) {
+      setLoading(true);
       const timestamp = new Date();
       const messageId = timestamp.getTime().toString();
 
+      // alert(selectedChat.id);
+      // selectedChat.participants[1] not working in users
+      const participants = selectedChat.id.split("_").reverse();
+      alert(participants);
       const chatMessage = {
         id: messageId,
         userId: user.uid,
@@ -207,13 +207,17 @@ function TaskTalk() {
         chatId: selectedChat.id,
         participants: [
           user.uid,
-          selectedChat.participants[1] !== user.uid
-            ? selectedChat.participants[1]
-            : selectedChat.participants[0],
+          participants[1] !== user.uid
+            ? participants[1]
+            : participants[0],
         ],
       };
 
+      // alert("sending message 2");
+
       try {
+        // alert(selectedChat.id);
+        // alert("sending message 3");
         const messagesRef = collection(
           db,
           "TaskTalk",
@@ -229,17 +233,19 @@ function TaskTalk() {
           chatId: selectedChat.id,
           participants: [
             user.uid,
-            selectedChat.participants[1] !== user.uid
-              ? selectedChat.participants[1]
-              : selectedChat.participants[0],
+            participants[1] !== user.uid
+              ? participants[1]
+              : participants[0],
           ],
         });
 
         socket.emit("chatMessage", chatMessage);
         setMessage("");
         handleSelectChat(selectedChat);
+        setLoading(false);
       } catch (error) {
         console.error("Error sending message:", error);
+        setLoading(false);
       }
     } else {
       alert("Message can't be empty.");
@@ -250,15 +256,37 @@ function TaskTalk() {
     setShowChat(false);
   };
 
-  // useEffect(()=>{
+  const handleSearch = (searchQuery) => {
+    try {
+      const sanitizedQuery = searchQuery
+        .toLowerCase()
+        .replace(/[.*+?^${}()|[\]\\]/g, "");
 
-  // })
+      const filtered = users.filter((user) => {
+        const userName = user.name;
+        return userName.toLowerCase().includes(sanitizedQuery);
+      });
+
+      console.log("Filtered Users:", filtered);
+      setFilteredUsers(filtered);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    handleSearch(searchQuery);
+  }, [searchQuery]);
 
   return (
+    // check to see whether user has signed in or not
+    // fix the search function
     <div className='flex h-screen p-20'>
       <div className='sidebar sticky p-4 w-1/4 border-r border-gray-300'>
-        <h2 className='text-xl mb-4'>TaskTalk</h2>
-        <form onSubmit={handleSearch} className='mb-4'>
+        <h2 className='text-xl mb-4 bg-blue-600 text-white p-2'>
+          TaskTalk
+        </h2>
+        <div className='mb-4'>
           <input
             type='text'
             placeholder='Search users'
@@ -266,19 +294,14 @@ function TaskTalk() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className='w-full p-2 border rounded'
           />
-          <button
-            type='submit'
-            className='w-full p-2 mt-2 bg-blue-500 text-white rounded'>
-            {loading ? "Loading..." : "Search"}
-          </button>
-        </form>
+        </div>
         <ul className='flex flex-col gap-2'>
           Recent Chats
           {TaskTalk.map((chat) => (
             <li
               key={chat.id}
               onClick={() => handleSelectChat(chat)}
-              className={`p-2 cursor-pointer hover:bg-slate-300 ${
+              className={`p-2 cursor-pointer hover:bg-slate-300 rounded-lg ${
                 selectedChat && selectedChat.id === chat.chatId
                   ? "bg-gray-200 rounded-lg"
                   : "border"
@@ -319,13 +342,14 @@ function TaskTalk() {
                   Chat Dialog
                 </h2>
               </div>
-              <div className=' flex-1 overflow-y-auto mb-2  border-2 border-dotted rounded-l p-4 h-[18.5em] scrollbar-none scrollbar-thumb-sky-700 scrollbar-track-sky-300'>
+              <div className=' flex-1 overflow-y-auto mb-2  border-2 border-dotted p-4 h-[18.5em] scrollbar-none scrollbar-thumb-sky-700 scrollbar-track-sky-300'>
                 {/* Message List */}
                 <div className='message-list '>
                   {messages.map((msg) => {
                     const participant = users.find(
-                      (user) => user.uid === messages.userId
+                      (user) => user.uid === msg.userId
                     );
+
                     return (
                       <div
                         key={msg.id}
@@ -338,17 +362,18 @@ function TaskTalk() {
                           <strong>
                             {msg.userId === user.uid
                               ? "You"
-                              : `{Participant}`}
+                              : `${participant.name}`}
                           </strong>
                           <p>{msg.text}</p>
                         </div>
                         <div className='message-timestamp text-xs text-gray-500'>
                           {new Date(
-                              msg.timestamp?.toDate()
-                            ).toLocaleTimeString() +" "+new Date(
                             msg.timestamp?.toDate()
-                          ).toDateString()
-                            }
+                          ).toLocaleTimeString() +
+                            " " +
+                            new Date(
+                              msg.timestamp?.toDate()
+                            ).toDateString()}
                         </div>
                       </div>
                     );
@@ -369,14 +394,16 @@ function TaskTalk() {
                   type='text'
                   placeholder='Type a message'
                   value={message}
+                  disabled={loading}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyDown={handleTyping}
                   className='flex-1 p-2 border rounded'
                 />
                 <button
                   type='submit'
-                  className='ml-2 p-2 bg-blue-500 text-white rounded'>
-                  Send
+                  disabled={loading}
+                  className='ml-2 p-2 w-20 flex justify-center items-center bg-blue-500 text-white rounded'>
+                  {loading ? <Spinner /> : "Send"}
                 </button>
               </form>
 
@@ -396,25 +423,66 @@ function TaskTalk() {
           ) : (
             <div>
               <h3 className='mb-4 text-xl'>Users</h3>
-              {users.length > 0 ? (
-                users.map((item, index) => (
-                  <div
-                    key={index}
-                    onClick={() => handleSelectChat(item)}
-                    className={`p-2 border-b cursor-pointer ${
-                      item.userId === user.uid ? "hidden" : "block"
-                    }`}>
-                    {item.name} ({item.role})
-                    <span
-                      className={`ml-2 inline-block w-2 h-2 rounded-full ${
-                        item.status?.state === "online"
-                          ? "bg-green-500"
-                          : "bg-gray-400"
-                      }`}></span>
-                  </div>
-                ))
+              {searchQuery === "" ? (
+                users.length > 0 ? (
+                  users.map((item, index) => {
+                    const selectedChat = TaskTalk.find((chat) =>
+                      chat.participants.includes(item.userId)
+                    );
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => handleSelectChat(selectedChat)}
+                        className={`p-2 border-b cursor-pointer ${
+                          item.userId === user.uid
+                            ? "hidden"
+                            : "block"
+                        }`}>
+                        {item.name} ({item.role})
+                        <span
+                          className={`ml-2 inline-block w-2 h-2 rounded-full ${
+                            item.status?.state === "online"
+                              ? "bg-green-500"
+                              : "bg-gray-400"
+                          }`}></span>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p>No users found.</p>
+                )
               ) : (
-                <p>No users found.</p>
+                <div className=''>
+                  {filteredUsers.length > 0 ? (
+                    filteredUsers.map((item, index) => {
+                      const selectedChat = TaskTalk.find((chat) =>
+                        chat.participants.includes(item.userId)
+                      );
+                      return (
+                        <div
+                          key={index}
+                          onClick={() =>
+                            handleSelectChat(selectedChat)
+                          }
+                          className={`p-2 border-b cursor-pointer ${
+                            item.userId === user.uid
+                              ? "hidden"
+                              : "block"
+                          }`}>
+                          {item.name} ({item.role})
+                          <span
+                            className={`ml-2 inline-block w-2 h-2 rounded-full ${
+                              item.status?.state === "online"
+                                ? "bg-green-500"
+                                : "bg-gray-400"
+                            }`}></span>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <p>No such users found.</p>
+                  )}
+                </div>
               )}
             </div>
           )}
