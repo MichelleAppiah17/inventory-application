@@ -38,10 +38,10 @@ export const SideBar = () => {
           <Sidebar.Item href='/admin/dashboard/manage' icon={HiInbox}>
             Manage Books
           </Sidebar.Item>
-          <Sidebar.Item href='/login' icon={HiArrowSmRight}>
-            Sign In
+          <Sidebar.Item href='/' icon={HiArrowSmRight}>
+            Home
           </Sidebar.Item>
-          <Sidebar.Item href='/logout' icon={HiTable}>
+          <Sidebar.Item href='/logout' icon={HiTable} >
             Log Out
           </Sidebar.Item>
         </Sidebar.ItemGroup>
