@@ -21,7 +21,7 @@ const Login = () => {
     login(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        alert("Login successful!!");
+        // alert("Login successful!!");
         if (isBuyer) {
           navigate("/", { replace: true });
         } else {
@@ -46,7 +46,7 @@ const Login = () => {
     loginWithGoogle()
       .then((result) => {
         const user = result.user;
-        alert("Login successful!");
+        // alert("Login successful!");
         if (isBuyer) {
           navigate("/", { replace: true });
         } else {

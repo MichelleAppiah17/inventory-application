@@ -54,26 +54,39 @@ const AuthProvider = ({ children }) => {
 
   const loginWithGoogle = () => {
     setLoading(true);
-    return signInWithPopup(auth, googleProvider);
+    return signInWithPopup(auth, googleProvider).finally(() => {
+      setLoading(false);
+    });
   };
 
   const login = (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password).finally(
+      () => {
+        setLoading(false);
+      }
+    );
   };
 
   const logout = () => {
-    return signOut(auth);
+    setLoading(true);
+    return signOut(auth).finally(() => {
+      setLoading(false);
+      setUser(null); // Clear user state on logout
+    });
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
-    return () => {
-      unsubscribe();
-    };
+
+    return () => unsubscribe();
   }, []);
 
   const authInfo = {
@@ -87,7 +100,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={authInfo}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
