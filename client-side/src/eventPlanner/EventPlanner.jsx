@@ -17,9 +17,8 @@ function EventPlanner() {
   const [author, setAuthor] = useState("");
   const [deadline, setDeadline] = useState("");
   const [allBooks, setAllBooks] = useState([]);
-  const { user, logout } = useContext(AuthContext); // use this once you have an authentication pathway for buyers
+  const { user, logout } = useContext(AuthContext);
 
-  // Reference to the Firestore collection
   const scheduledPurchasesRef = collection(db, "scheduledPurchases");
 
   const apiUrl = "https://inventory-application-zrr6.onrender.com";
@@ -31,7 +30,6 @@ function EventPlanner() {
       return;
     }
 
-    // Fetch books from external API
     fetch(`${apiUrl}/all-books`)
       .then((res) => res.json())
       .then((data) => {
@@ -41,12 +39,11 @@ function EventPlanner() {
         console.error("Error fetching books:", error);
       });
 
-    // Fetch scheduled books from Firestore
     const fetchBooks = async () => {
       try {
         const q = query(
           scheduledPurchasesRef,
-          where("userId", "==", user.uid) // Query books by userId
+          where("userId", "==", user.uid)
         );
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
           const booksData = querySnapshot.docs.map((doc) => ({
@@ -70,7 +67,9 @@ function EventPlanner() {
       const bookExists = allBooks.some(
         (book) =>
           book.bookTitle.toLowerCase().replace(/\s+/g, "") ===
-          title.toLowerCase().replace(/\s+/g, "")
+            title.toLowerCase().replace(/\s+/g, "") &&
+          book.authorName.toLowerCase().replace(/\s+/g, "") ===
+            author.toLowerCase().replace(/\s+/g, "")
       );
 
       if (bookExists) {
@@ -85,7 +84,6 @@ function EventPlanner() {
 
           const bookDocRef = doc(db, "scheduledPurchases", bookId);
 
-          // Create or update the document with the new book data
           await setDoc(bookDocRef, newBook, { merge: true });
 
           setBooks((prevBooks) => [
@@ -108,74 +106,107 @@ function EventPlanner() {
     }
   };
 
+
   return (
-    // make use of max-sm: and sm:max-md: to make it more responsive(apply this principle everywhere)
-    <div className='event-planner p-20 flex flex-col items-center'>
-      <h1 className='text-3xl font-bold'>Book Purchase Planner</h1>
-      <div className='input-form'>
+    <div className='event-planner p-20 max-w-screen-lg mx-auto '>
+      <h1 className='text-4xl font-extrabold text-center text-gray-800 dark:text-gray-200 mb-8'>
+        Book Purchase Planner
+      </h1>
+
+      <div className='input-form grid gap-4 sm:grid-cols-2 md:grid-cols-3'>
         <input
           type='text'
           placeholder='Book Title'
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          className='p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
         />
         <input
           type='text'
           placeholder='Author'
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
+          className='p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
         />
         <input
           type='date'
           min={new Date().toISOString().split("T")[0]}
           value={deadline}
           onChange={(e) => setDeadline(e.target.value)}
+          className='p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
         />
         <button
           onClick={handleAddBook}
-          className='p-2 bg-blue-600 text-white w-36 active:border-2'>
+          className='col-span-full p-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all'>
           Add Book
         </button>
       </div>
-      <div className='book-list'>
-        <h2>Scheduled Books</h2>
+
+      <div className='book-list mt-10'>
+        {books.length > 0 ? (
+          <h2 className='text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4'>
+            Scheduled Books
+          </h2>
+        ) : (
+          ""
+        )}
+
         {user ? (
-          <ul>
-            {books.length > 0
-              ? books.map((book, index) => (
+          <ul className='space-y-4'>
+            {books.length > 0 ? (
+              books.map((book, index) => {
+              
+                return (
                   <li
                     key={index}
-                    className='border p-5 rounded-lg my-2'>
-                    <span>
-                      <strong>Title:</strong> {book.title},{" "}
-                      <strong>Author:</strong> {book.author}
-                    </span>
-                    <span>
-                      {" "}
-                      - <strong>Deadline:</strong>{" "}
-                      {new Date(book.deadline).toLocaleDateString()}
-                    </span>
+                    className='p-4 border rounded-lg shadow-sm bg-gray-50 dark:bg-gray-700 dark:text-gray-300'>
+                    <div className='flex justify-between'>
+                      <div>
+                        <strong>Title:</strong> {book.title} <br />
+                        <strong>Author:</strong> {book.author}
+                      </div>
+                      {/*  */}
+                      <div>
+                        <strong>Deadline:</strong>{" "}
+                        {new Date(book.deadline).toLocaleDateString()}
+                      </div>
+                    </div>
                   </li>
-                ))
-              : "You have no scheduled books"}
+                );
+              })
+            ) : (
+              <p className='text-gray-500 dark:text-gray-400'>
+                You have no scheduled books
+              </p>
+            )}
           </ul>
         ) : (
-          <div>
-            <p>You are currently logged out</p>
+          <div className='text-center mt-6'>
+            <p className='text-gray-500 dark:text-gray-400 mb-4'>
+              You are currently logged out
+            </p>
             <Link
-              to={"/login"}
-              className='underline underline-offset-2'>
+              to='/login'
+              className='text-blue-600 underline hover:text-blue-800 transition-all'>
               Continue as a buyer
             </Link>{" "}
             or{" "}
             <Link
-              to={"/sign-up"}
-              className='underline underline-offset-2'>
+              to='/sign-up'
+              className='text-blue-600 underline hover:text-blue-800 transition-all'>
               Become a registered user
             </Link>
           </div>
         )}
-        {user && <button onClick={() => logout()} className="bg-blue-600 text-white p-2">Logout</button>}
+        {user && (
+          <div className='text-center mt-6'>
+            <button
+              onClick={() => logout()}
+              className='bg-blue-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition-all'>
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

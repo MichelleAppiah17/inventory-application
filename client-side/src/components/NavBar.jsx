@@ -51,7 +51,7 @@ const NavBar = () => {
             to='/'
             className='text-2xl font-bold text-blue-700 flex items-center gap-2'>
             <FaBlog className='inline-block' />
-            Books
+            TaskTalk and Books
           </Link>
           {/* nav items for large device */}
           <ul className='md:flex space-x-12 hidden'>
